@@ -1,3 +1,7 @@
+h1 {
+  margin-bottom: 40px;
+}
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -5,4 +9,42 @@ body {
 
 a {
   color: #00B7FF;
+}
+
+.search-box {
+  margin-bottom: 30px;
+}
+
+.atoz-navigation {
+  border-bottom: 1px solid #ececec;
+}
+
+.atoz-navigation ul li {
+  padding-left: 0px;
+  padding-right: 15px;
+  padding-bottom: 20px;
+  padding-top: 32px;
+}
+
+.atoz-navigation ul li.selected {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.atoz-navigation ul li.selected a {
+  font-size: 48px;
+}
+
+.atoz-navigation ul li a {
+  color: black;
+  padding: 0px;
+}
+
+.atoz-navigation ul li a:hover {
+  background-color: white;
+}
+
+.search-result {
+  border-bottom: 1px solid #ececec;
+  padding-bottom: 10px;
 }

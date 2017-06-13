@@ -8,7 +8,11 @@
   <body>
     <div class="container">
       <%- include('_header.ejs') %>
-      <%- include('suppliers/list.ejs') %>
+
+      <div id="body">
+        <%- include('suppliers/_atoz.ejs') %>
+        <%- include('suppliers/_results.ejs') %>
+      </div>
     </div>
 
     <script src="/javascripts/vendor/jquery.js"></script>

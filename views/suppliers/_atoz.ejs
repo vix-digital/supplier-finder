@@ -1,0 +1,7 @@
+<div class="atoz-navigation">
+    <ul class="nav nav-pills">
+        <% categories.forEach(function(category) { %>
+            <li role="presentation" <%= (category == current) ? "class=selected" : "" %>><a href="/?prefix=<%= category %>"><%= category %></a></li>
+        <% }); %>
+    </ul>
+</div>

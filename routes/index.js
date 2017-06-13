@@ -1,11 +1,7 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
+var supplier_controller = require('../controllers/supplierController.js')
 
-router.get('/', function(req, res, next) {
-  res.render('index', {
-    title: 'Supplier Finder',
-    suppliers: [],
-  });
-});
+router.get('/', supplier_controller.index)
 
-module.exports = router;
+module.exports = router

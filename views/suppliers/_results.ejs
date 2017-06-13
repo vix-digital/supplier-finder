@@ -1,16 +1,14 @@
-<table class="table table-striped">
-  <tr>
-    <th>#</th>
-    <th>Name</th>
-    <th>Service</th>
-  </tr>
-  <tbody>
+<div class="row">
+  <div class="col-sm-12">
+
     <% suppliers.forEach(function(supplier) { %>
-      <tr>
-        <td><%= supplier.id %></td>
-        <td><%= supplier.name %></td>
-        <td><%= supplier.service %></td>
-      </tr>
+      <div class="row search-result">
+        <div class="col-sm-12">
+          <h3><%= supplier.name %></h3>
+          <p><%= supplier.description %></p>
+        </div>
+      </div>
     <% }) %>
-  </tbody>
-</table>
+
+  </div>
+</div>
