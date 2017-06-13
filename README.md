@@ -4,6 +4,12 @@ Supplier Finder is a Node.JS express application used to simplify the process of
 
 ## Installation
 
+### Prerequisite
+
+Currently requires an instance of mongoDB running.
+
+### Steps
+
 1. NPM Install
 2. NPM Start
 
