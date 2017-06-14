@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+
+    supplier-finder:
+        ports:
+            - 3000:3000
+        build: .
+        restart: always
+        depends_on:
+            - mongoDB
+        links:
+            - mongoDB
+        volumes:
+            - ./:/supplier-finder
+        command: npm run start:dev
+
+    mongoDB:
+        ports:
+            - 27017
+        image: mongo:latest
