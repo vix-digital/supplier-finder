@@ -49,12 +49,15 @@ function listCategories() {
 function findAll(regex) {    
     return new Promise(
         (resolve, reject) => {
-            supplier_model.find({name: { $regex: regex, $options: 'm' }}, null, {sort: {name: 1}}, function(err, suppliers) {
-                if (err) {
-                    return reject(err)
-                }
-                return resolve(suppliers)
-            })
+            supplier_model.find({name: { $regex: regex, $options: 'm' }})
+                .collation({locale: "en"})
+                .sort({name: 'asc'})
+                .exec(function(err, suppliers) {
+                    if (err) {
+                        return reject(err)
+                    }
+                    return resolve(suppliers)
+                })
         }
     )
 }
