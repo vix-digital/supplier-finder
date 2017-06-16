@@ -10,8 +10,13 @@
       <%- include('_header.ejs') %>
 
       <div id="body">
+        <%- include('suppliers/_filter.ejs') %>
         <%- include('suppliers/_atoz.ejs') %>
-        <%- include('suppliers/_results.ejs') %>
+        <div class="row">
+          <div id="supplier-results" class="col-sm-12">
+            <%- include('suppliers/_results.ejs') %>
+          </div>
+        </div>
       </div>
     </div>
 
