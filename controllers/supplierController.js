@@ -32,7 +32,7 @@ function getSupplierTemplateData(prefixInput, filtersInput) {
 
     var regex = getStartsWithRegex(templateData.prefix)
     if (regex) {
-        templateData.filters.name = regex
+        templateData.filters.name =  { $regex: regex, $options: 'm' }
     }
 
     return templateData
