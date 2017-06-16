@@ -1,1 +1,62 @@
-filter
+<form id="supplier-filter">
+    
+    <div class="row">
+
+        <div class="col-sm-12 col-md-12">
+            <h4>Capability</h4>
+            <div class="col-sm-12 col-md-4">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="capability.user_research" value="yes" <% if (filters['capability.user_research']) { %>checked="true"<% } %>> User Research
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="capability.user_experience_and_design" value="yes" <% if (filters['capability.user_experience_and_design']) { %>checked="true"<% } %>> User Experience & Design
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="capability.testing_and_auditing" value="yes" <% if (filters['capability.testing_and_auditing']) { %>checked="true"<% } %>> Testing and Auditing
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="capability.support_and_operations" value="yes" <% if (filters['capability.support_and_operations']) { %>checked="true"<% } %>> Support and Operations
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="capability.software_development" value="yes" <% if (filters['capability.software_development']) { %>checked="true"<% } %>> Software Development
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="capability.service_delivery" value="yes" <% if (filters['capability.service_delivery']) { %>checked="true"<% } %>> Service Delivery
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="capability.security" value="yes" <% if (filters['capability.security']) { %>checked="true"<% } %>> Security
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="capability.performance_analysis_and_data" value="yes" <% if (filters['capability.performance_analysis_and_data']) { %>checked="true"<% } %>> Performance Analysis and Data
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="location.remote_working" value="yes" <% if (filters['location.remote_working']) { %>checked="true"<% } %>> Remote Working
+                    </label>
+                </div>
+                <a id="reset-filter-link" href="">reset</a>
+            </div>
+        </div>
+        
+    </div>
+</form>

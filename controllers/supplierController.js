@@ -1,35 +1,41 @@
 var csvFilePath = 'import/digital-outcomes-suppliers.csv'
 var csv = require('csvtojson')
+var _ = require('lodash')
 
 var supplier_model = require('../models/supplierModel')
 
 exports.index = function(req, res) {
-    var prefix = req.query.prefix
+    var prefixInput = req.query.prefix
+    var filtersInput = req.cookies.filters
+    var templateData = getSupplierTemplateData(prefixInput, filtersInput)
 
-    function getTitle(prefix) {
-        return prefix ? 'Suppliers starting with ' + prefix : 'Supplier Finder'
-    }
-
-    var title = getTitle(prefix)
-    var categories = listCategories()
-    var regex = getStartsWithRegex(prefix)
-
-    findAll(regex)
+    findAll(templateData.filters)
         .then(
             function(suppliers) {
-                res.render('index', {
-                    title: title,
-                    categories: categories,
-                    current: prefix,
-                    suppliers: suppliers
-                })
+                templateData.suppliers = suppliers
+                res.render('index', templateData)
             })
         .catch(
             (err) => {
                 res.render('503')
             }
         )
+}
 
+function getSupplierTemplateData(prefixInput, filtersInput) {
+    var templateData = {}
+
+    templateData.categories = listCategories()
+    templateData.prefix = getPrefix(prefixInput, templateData.categories)
+    templateData.title = getTitle(templateData.prefix)
+    templateData.filters = getFilters(filtersInput)
+
+    var regex = getStartsWithRegex(templateData.prefix)
+    if (regex) {
+        templateData.filters.name = regex
+    }
+
+    return templateData
 }
 
 function listCategories() {
@@ -42,21 +48,106 @@ function listCategories() {
     return CATEGORIES
 }
 
+function getPrefix(query, categories) {
+    var prefix;
+
+    // query is not in categories list
+    if (categories.indexOf(query) == -1) {
+        return prefix
+    }
+
+    prefix = query;
+    return prefix
+}
+
+function getTitle(prefix) {
+    return prefix ? 'Suppliers starting with ' + prefix : 'Supplier Finder'
+}
+
+function getFilters(filters) {
+    var defaults = {}
+    var availableFilters = [
+        "capability.user_research",
+        "capability.user_experience_and_design",
+        "capability.testing_and_auditing",
+        "capability.support_and_operations",
+        "capability.software_development",
+        "capability.service_delivery",
+        "capability.security",
+        "capability.performance_analysis_and_data",
+        "location.remote_working"
+    ]
+
+    if (!filters) {
+        return defaults
+    }
+    else {
+
+        // remove any filters that are not available
+        _.each(filters, function(value, key) {
+            if (availableFilters.indexOf(key) == -1) {
+                delete filters[key]
+            }
+        })
+
+        return filters
+    }
+}
+
+function getStartsWithRegex(prefix) {
+    var regex;
+
+    if (prefix) {
+        if (prefix == '1-9') {
+            prefix = '[1-9]'
+        }
+        regex = new RegExp('^' + prefix)
+    }
+    
+    return regex
+}
+
 /* Find All Suppliers
- * Accepts an optional regex to filter name by
- * Returns all suppliers in alphabetical order
+ * Accepts template data and returns suppliers
+ * Returns suppliers in alphabetical order
  */
-function findAll(regex) {    
+function findAll(filters) {
     return new Promise(
         (resolve, reject) => {
-            supplier_model.find({name: { $regex: regex, $options: 'm' }}, null, {sort: {name: 1}}, function(err, suppliers) {
-                if (err) {
-                    return reject(err)
-                }
-                return resolve(suppliers)
-            })
+            supplier_model.find(filters)
+                .collation({locale: "en"})
+                .sort({name: 'asc'})
+                .exec(function(err, suppliers) {
+                    if (err) {
+                        return reject(err)
+                    }
+                    return resolve(suppliers)
+                })
         }
     )
+}
+
+exports.results = function(req, res) {
+    var prefixInput = req.body.prefix
+    var filtersInput = req.body.filters
+    var templateData = getSupplierTemplateData(prefixInput, filtersInput)
+
+    // set the current state of the filters
+    res.cookie('filters', templateData.filters)
+
+    findAll(templateData.filters)
+        .then(
+            function(suppliers) {
+                res.render('suppliers/_results', {
+                    suppliers: suppliers
+                })
+            })
+        .catch(
+            (err) => {
+                res.render('503')
+            }
+        )
+
 }
 
 exports.import = function(req, res) {
@@ -136,15 +227,4 @@ function saveAll(collection) {
             })
         }
     )
-}
-
-function getStartsWithRegex(prefix) {
-    let regex = ''
-    if (prefix) {
-        if (prefix == '1-9') {
-            prefix = '[1-9]'
-        }
-        regex = new RegExp('^' + prefix)
-    }
-    return regex
 }
