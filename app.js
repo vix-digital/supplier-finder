@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var helmet = require('helmet');
 
 var index = require('./routes/index');
 
@@ -11,7 +12,9 @@ var app = express();
 
 // dbsetup
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://mongoDB/supplier-finder');
+var mongodbConnectionString = 'mongodb://' + process.env.MONGODB_HOST + '/supplier-finder';
+console.log(mongodbConnectionString);
+mongoose.connect(mongodbConnectionString);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -24,12 +27,12 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(logger('default'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(helmet())
 app.use('/', index);
 
 // catch 404 and forward to error handler

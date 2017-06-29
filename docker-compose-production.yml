@@ -8,14 +8,13 @@ services:
         build: .
         restart: always
         environment:
+            NODE_ENV: production
             MONGODB_HOST: mongodb
         depends_on:
             - mongodb
         links:
             - mongodb
-        volumes:
-            - ./:/supplier-finder
-        command: npm run start:dev
+        command: npm start
 
     mongodb:
         ports:
