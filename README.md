@@ -10,15 +10,19 @@ Requires Docker and docker-compose
 
 ### Steps
 
-1. docker-compose up
+1. docker-compose -f docker-compose-production up
+2. visit /import (WIP)
 
 ## Contributing
-
-The main purpose of this repository is to make it easier to browse suppliers and prepare requirements for the digital marketplace.
 
 ### Contributing Guide
 
 This is currently in a discovery phase, but we're working on ways for people to contribute to this project. For the meantime, feel free to create an issue or submit a pull request.
+
+### Steps
+
+1. docker-compose up
+2. visit /import (WIP)
 
 ### Semantic Versioning
 

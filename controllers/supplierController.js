@@ -150,28 +150,60 @@ exports.results = function(req, res) {
 
 }
 
+/*
+ *  Will attempt to import data from /import/digital-outcomes-supplier.csv if
+ *  there is no suppliers in the database.
+ */
 exports.import = function(req, res) {
-    importAll()
+    countAll()
         .then(
-            function(suppliers) {
-                saveAll(suppliers)
-                    .then(
-                        function() {
-                            res.status(200).json("Successfully imported data.")
-                        }
-                    )
-                    .catch(
-                        (err) => {
-                            res.status(500).json("Error importing data.")
-                        }
-                    )
+            function(count) {
+                if (count != 0) {
+                    return res.status(200).json("Successfully imported data.")
+                }
+                else {
+                    importAll()
+                        .then(
+                            function(suppliers) {
+                                saveAll(suppliers)
+                                    .then(
+                                        function() {
+                                            res.status(200).json("Successfully imported data.")
+                                        }
+                                    )
+                                    .catch(
+                                        (err) => {
+                                            res.status(500).json("Error saving import data.")
+                                        }
+                                    )
+                            }
+                        )
+                        .catch(
+                            (err) => {
+                                res.status(500).json("Error importing data." )
+                            }
+                        )
+                }
             }
         )
         .catch(
             (err) => {
-                res.status(500).json("Error importing data." )
+                res.status(500).json("Error counting data." )
             }
         )
+}
+
+function countAll() {
+    return new Promise(
+        (resolve, reject) => {
+            supplier_model.count({}, function(err, count) {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(count)
+            })
+        }
+    )
 }
 
 function importAll() {
