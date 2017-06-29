@@ -13,7 +13,6 @@ var app = express();
 // dbsetup
 var mongoose = require('mongoose');
 var mongodbConnectionString = 'mongodb://' + process.env.MONGODB_HOST + '/supplier-finder';
-console.log(mongodbConnectionString);
 mongoose.connect(mongodbConnectionString);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
